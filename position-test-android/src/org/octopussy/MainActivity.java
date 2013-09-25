@@ -134,13 +134,6 @@ public class MainActivity extends AndroidApplication implements SensorEventListe
 			Log.d("fdf", Arrays.toString(deltaRotationVector));
 			//mRotationMatrix = new Matrix4(deltaRotationMatrix).mul(mRotationMatrix);
 		}
-
-		float[] r = new float[16];
-		if (SensorManager.getRotationMatrix(r, null, mGravityValues, mMagneticFieldValues)){
-			float[] o = new float[3];
-			SensorManager.getOrientation(r, o);
-			mRotationMatrix = new Matrix4(r).rotate(1, 0, 0, 90).tra();
-		}
 	}
 
 	@Override
@@ -149,24 +142,10 @@ public class MainActivity extends AndroidApplication implements SensorEventListe
 	}
 
 	private void tick(){
-		/*if (mGravityValues.length == 3 && mMagneticFieldValues.length == 3){
-			mTextView.setText(String.format("Gravity %5.2f %5.2f %5.2f \n MF %5.2f %5.2f %5.2f ", mGravityValues[0], mGravityValues[1], mGravityValues[2],
-				mMagneticFieldValues[0], mMagneticFieldValues[1], mMagneticFieldValues[2]));
-		} */
-
-		float[] r = new float[9];
-		float[] i = new float[9];
-		if (SensorManager.getRotationMatrix(r, i, mGravityValues, mMagneticFieldValues)){
-			float[] orientVals = new float[3];
-			SensorManager.getOrientation(r, orientVals);
-			double azimuth = Math.toDegrees(orientVals[0]);
-			double pitch = Math.toDegrees(orientVals[1]);
-			double roll = Math.toDegrees(orientVals[2]);
+		float[] r = new float[16];
+		if (SensorManager.getRotationMatrix(r, null, mGravityValues, mMagneticFieldValues)){
+			mRotationMatrix = new Matrix4(r).rotate(1, 0, 0, 90).tra();
 		}
-
-		float angle = 0.1f;
-
-		//mRotationMatrix.mul(new Matrix4().setToRotation(0, 1, 0, angle));
 
 		mHandler.postDelayed(new Runnable() {
 			@Override
